@@ -3,3 +3,6 @@ services:
     name: hotel-analytics-backend
     env: docker
     plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
