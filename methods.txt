@@ -1,0 +1,100 @@
+30:    private static final Logger LOGGER = Logger.getLogger(AgodaHotelScraper.class.getName());
+31:    private static final String AGODA_BASE_URL = "https://www.agoda.com";
+32:    private static final String HOTEL_LINK_PATH_SELECTOR = "a[href*='/hotel/']";
+33:    private static final String ROOM_PRICE_SELECTOR = "[data-element-name='room-price']";
+35:    private static final String[] SEARCH_RESULT_SELECTORS = {
+46:        private static final String[] SEARCH_INPUT_SELECTORS = {
+54:        private static final String[] SEARCH_BUTTON_SELECTORS = {
+61:    private static final String[] HOTEL_NAME_SELECTORS = {
+69:    private static final String[] HOTEL_LINK_SELECTORS = {
+77:    private static final String[] PRICE_SELECTORS = {
+85:    private static final String[] RATING_SELECTORS = {
+92:    private static final String[] REVIEW_COUNT_SELECTORS = {
+100:    private static final String[] ROOM_CARD_SELECTORS = {
+113:            private static final String[] HOTEL_AMENITY_SELECTORS = {
+121:            private static final String[] ROOM_TYPE_SELECTORS = {
+130:            private static final String[] ROOM_POLICY_SELECTORS = {
+139:            private static final String[] ROOM_AMENITY_SELECTORS = {
+147:            private static final String[] ROOM_AVAILABILITY_SELECTORS = {
+153:    private static final int SEARCH_TIMEOUT_MS = 20000;
+154:    private static final int MAX_RESULTS_TO_SCORE = 5;
+155:    private static final int MAX_AMENITIES = 10;
+156:    private static final int DEFAULT_STAY_NIGHTS = 1;
+157:    private static final int[] DATE_RETRY_OFFSETS = {7, 14, 30};
+159:    private static final Pattern PRICE_PATTERN = Pattern.compile(".*[₹$€£].*\\d.*");
+160:    private static final Pattern ROOM_SIZE_PATTERN = Pattern.compile(".*(m²|sq\\.? ?ft|square).*", Pattern.CASE_INSENSITIVE);
+161:    private static final Pattern BED_PATTERN = Pattern.compile(".*\\b(bed|beds)\\b.*", Pattern.CASE_INSENSITIVE);
+162:    private static final Pattern TAX_PATTERN = Pattern.compile(".*(tax|fee).*", Pattern.CASE_INSENSITIVE);
+164:    public static void main(String[] args) {
+181:    private static String promptForHotelName() {
+193:    private static void configureLogging() {
+203:    private static Hotel scrapeHotelByName(String hotelName) {
+238:    private static class SearchMatchResult {
+248:    private static class HotelCandidate {
+260:    private static SearchMatchResult navigateToBestMatch(Page page, String hotelName) {
+326:    private static SearchMatchResult openFallbackBestMatch(Page page, String hotelName) {
+336:    private static SearchMatchResult findBestMatchFromLinks(Page page, String hotelName) {
+389:    private static boolean loadSearchResults(Page page, String hotelName) {
+404:    private static boolean trySearchUrl(Page page, String url) {
+414:    private static boolean searchViaHomepage(Page page, String hotelName) {
+442:    private static boolean clickSearchButton(Page page) {
+457:    private static Locator waitAndLocateSearchCards(Page page) {
+482:    private static List<Hotel> extractCompetitorsFromSearch(Locator cards, int selectedIndex, int maxCompetitors) {
+530:    private static List<String> extractCardAmenities(Locator card) {
+556:    private static Hotel extractHotelDetails(Page page, String hotelName, String propertyUrl) {
+612:    private static String buildPointWiseOutput(Hotel hotel) {
+667:    private static String extractAddressFromStructuredData(Page page) {
+683:    private static String extractNumericRating(Page page) {
+702:    private static String resolveDisplayPrice(List<RoomOption> roomOptions, List<String> jsonLdBlocks) {
+718:    private static String pickRepresentativeRoomPrice(List<RoomOption> roomOptions) {
+737:    private static List<RoomOption> extractRoomOptionsWithRetries(Page page, String propertyUrl) {
+764:    private static List<RoomOption> extractRoomOptions(Page page) {
+799:    private static List<RoomOption> extractRoomOptionsFromVisibleBlocks(Page page) {
+828:    private static RoomOption parseRoomCard(Locator card) {
+891:    private static String extractCleanPrice(Locator card) {
+912:    private static List<String> extractCleanPolicies(Locator card) {
+937:    private static List<String> extractRoomAmenities(Locator card) {
+962:    private static boolean isValidPrice(String text) {
+974:    private static boolean isPolicyText(String text) {
+988:    private static boolean isRoomAmenityText(String text) {
+1006:    private static boolean isUsefulRoomOption(RoomOption option) {
+1010:    private static boolean isNoAvailabilityState(Page page) {
+1028:    private static String withDateRange(String url, LocalDate checkIn, int nights) {
+1040:    private static String stripFragment(String url) {
+1045:    private static String replaceOrAppendQueryParam(String url, String key, String value) {
+1053:    private static List<String> extractAmenities(Page page) {
+1078:    private static boolean isValidHotelAmenity(String text) {
+1099:    private static String extractReviewCount(Page page) {
+1122:    private static boolean looksLikeAddress(String text) {
+1137:    private static void scrollToRoomSection(Page page) {
+1154:    private static void dismissPopups(Page page) {
+1162:    private static void clickIfVisible(Page page, String selector) {
+1173:    private static Locator locateFirstVisible(Page page, String[] selectors) {
+1187:    private static String extractTextBySelectors(Locator root, String[] selectors) {
+1197:    private static String extractAttributeBySelectors(Locator root, String[] selectors, String attributeName) {
+1207:    private static String extractText(Page page, String selector) {
+1211:    private static String extractText(Locator root, String selector) {
+1215:    private static String extractText(Locator locator) {
+1226:    private static String extractAttribute(Locator root, String selector, String attributeName) {
+1238:    private static String extractMetaContent(Page page, String selector) {
+1250:    private static String extractJsonLdField(List<String> jsonLdBlocks, String fieldName) {
+1261:    private static String extractAddressFromJsonLd(List<String> jsonLdBlocks) {
+1276:    private static String extractField(String block, String fieldName) {
+1284:    private static Pattern buildJsonPattern(String fieldName) {
+1288:    private static String extractNumericValue(String text) {
+1296:    private static String extractReviewCountValue(String text) {
+1304:    private static double similarityScore(String requestedName, String candidateName) {
+1321:    private static Set<String> tokenSet(String value) {
+1336:    private static boolean containsAny(String value, String... tokens) {
+1345:    private static boolean isNoise(String value) {
+1358:    private static void deduplicate(List<String> values) {
+1364:    private static String normalizeAgodaUrl(String href) {
+1371:    private static String buildSearchUrl(String hotelName) {
+1381:    private static String buildLegacySearchUrl(String hotelName) {
+1391:    private static String urlEncode(String value) {
+1399:    private static boolean isValidDisplayPrice(String priceText) {
+1413:    private static Integer parsePriceAmount(String priceText) {
+1428:    private static String firstNonBlank(String... values) {
+1438:    private static String joinNonBlank(String delimiter, String... values) {
+1452:    private static String normalizeText(String value) {
+1460:    private static String unescapeJson(String value) {
