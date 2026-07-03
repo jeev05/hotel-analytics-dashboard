@@ -1,31 +1,38 @@
-# Use the official Playwright Java image as the base — it comes with all required
-# system dependencies for headless Chromium pre-installed (libnss3, libatk, libgbm,
-# libxcomposite, etc.). Using a plain JDK image and trying to install those manually
-# is fragile and the #1 reason Playwright fails on cloud deployments.
+# Stage 1: Build the React frontend
+FROM node:20-slim AS frontend-build
+
+WORKDIR /frontend
+COPY frontend/package*.json ./
+RUN npm ci --silent
+COPY frontend/ ./
+RUN npm run build
+# Output is now at /frontend/dist/
+
+
+# Stage 2: Build and run the Spring Boot backend
 FROM mcr.microsoft.com/playwright/java:v1.45.0-jammy
 
 WORKDIR /app
 
-# Install Maven (not included in the Playwright image)
+# Install Maven
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
-# Copy Maven config first for layer caching — dependencies only re-download
-# when pom.xml changes, not on every code change.
+# Copy pom.xml first for dependency caching
 COPY pom.xml .
 RUN mvn dependency:go-offline -q
 
-# Copy source and build
-COPY src ./src
-COPY frontend ./frontend
+# Copy the built frontend into Spring Boot's static resources directory
+# so it gets packaged INSIDE the JAR — no filesystem dependency at runtime
+COPY --from=frontend-build /frontend/dist/ src/main/resources/static/
 
+# Copy Java source and build the JAR
+COPY src ./src
 RUN mvn clean package -DskipTests -q
 
-# The Playwright image already has Chromium installed at the correct path.
-# We just need to tell Playwright where to find it.
+# Playwright browser path (already installed in base image)
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
-# Render free tier has 512MB RAM — these JVM flags keep memory usage reasonable
-# and prevent OOM kills during scraping.
+# JVM memory limits for Render free tier (512MB RAM)
 ENV JAVA_OPTS="-Xmx400m -Xms128m -XX:+UseContainerSupport"
 
 EXPOSE 9090

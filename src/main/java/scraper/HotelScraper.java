@@ -87,7 +87,16 @@ public class HotelScraper {
 
     public static Hotel scrapeHotelByName(String hotelName) {
         try (Playwright playwright = Playwright.create();
-             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+                     .setHeadless(true)
+                     .setArgs(java.util.Arrays.asList(
+                         "--no-sandbox",
+                         "--disable-setuid-sandbox",
+                         "--disable-dev-shm-usage",
+                         "--disable-gpu",
+                         "--disable-blink-features=AutomationControlled",
+                         "--single-process"
+                     )));
              BrowserContext context = browser.newContext(
                      new Browser.NewContextOptions().setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                      .setLocale("en-US")
