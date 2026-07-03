@@ -11,7 +11,9 @@ RUN mvn clean package -DskipTests
 
 RUN mvn exec:java \
     -Dexec.mainClass=com.microsoft.playwright.CLI \
-    -Dexec.args="install --with-deps chromium"
+    -Dexec.args="install chromium"
+
+RUN chmod -R 755 /root/.cache/ms-playwright
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
 
