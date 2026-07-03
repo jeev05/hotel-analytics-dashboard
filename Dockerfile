@@ -18,7 +18,7 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/root/.cache/ms-playwright
 # Install Chromium for Playwright
 RUN mvn exec:java \
     -Dexec.mainClass=com.microsoft.playwright.CLI \
-    -Dexec.args="install chromium"
+    -Dexec.args="install --with-deps chromium"
 
 # Give proper permissions
 RUN chmod -R 755 /root/.cache/ms-playwright
