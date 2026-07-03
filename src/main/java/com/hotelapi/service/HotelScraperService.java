@@ -1,7 +1,7 @@
 package com.hotelapi.service;
 
 import com.hotelapi.dto.*;
-import com.hotelapi.dto.BookingAgodaComparisonDTO;
+
 import model.Hotel;
 import model.RoomOption;
 import scraper.AgodaScraper;
@@ -93,9 +93,9 @@ public class HotelScraperService {
             }
             return HotelScraper.scrapeHotelByName(hotelName);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error scraping hotel data: " + e.getMessage(), e);
-            return null;
-        }
+    LOGGER.log(Level.SEVERE, "SCRAPER FAILED (" + source + ")", e);
+    throw new RuntimeException(e);
+}
     }
 
     /**
