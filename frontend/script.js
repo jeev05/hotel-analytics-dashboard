@@ -1,13 +1,10 @@
 // ========== API CONFIGURATION ==========
+// ========== API CONFIGURATION ==========
 const API_BASE_URLS = [
-    'http://localhost:9090/api',  // Primary backend on port 9090
-    'http://localhost:8081/api',
-    'http://localhost:8080/api',
-    'http://127.0.0.1:9090/api',
-    'http://127.0.0.1:8081/api',
-    'http://127.0.0.1:8080/api'
+    'https://hotel-analytics-api.onrender.com/api'
 ];
-const TIMEOUT_MS = 120000; // 120 second timeout for scraping calls
+
+const TIMEOUT_MS = 120000; // 120 second timeout for scraping calls // 120 second timeout for scraping calls
 
 // ========== DOM ELEMENTS ==========
 const elements = {

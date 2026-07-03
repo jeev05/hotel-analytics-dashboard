@@ -7,7 +7,7 @@
  */
 
 // Configuration
-const API_BASE_URL = 'http://localhost:9090/api';  // Primary backend on port 9090
+const API_BASE_URL = 'https://hotel-analytics-api.onrender.com/api';  // Primary backend on port 9090
 const TIMEOUT_MS = 30000;
 
 // Fallbacks in case API is reachable at other common ports:
