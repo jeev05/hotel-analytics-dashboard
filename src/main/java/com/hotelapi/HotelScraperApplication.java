@@ -14,20 +14,26 @@ public class HotelScraperApplication {
         SpringApplication.run(HotelScraperApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
+  @Bean
+public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+
+            registry.addMapping("/api/**")
                     .allowedOriginPatterns(
-                        "http://localhost:*",
-                        "http://127.0.0.1:*",
-                        "null")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .maxAge(3600);
-            }
+                            "http://localhost:*",
+                            "http://127.0.0.1:*",
+                            "https://hotel-analytics-dashboard.vercel.app"
+                    )
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowedHeaders("*")
+                    .allowCredentials(true)
+                    .maxAge(3600);
+        }
+    };
+}
 
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
