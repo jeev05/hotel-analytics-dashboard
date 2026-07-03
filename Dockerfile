@@ -23,10 +23,13 @@ RUN mvn dependency:go-offline -q
 
 # Copy the built frontend into Spring Boot's static resources directory
 # so it gets packaged INSIDE the JAR — no filesystem dependency at runtime
+# Copy the entire project
+COPY . .
+
+# Replace the frontend source with the built frontend
 COPY --from=frontend-build /frontend/dist/ src/main/resources/static/
 
-# Copy Java source and build the JAR
-COPY src ./src
+# Build
 RUN mvn clean package -DskipTests -q
 
 # Playwright browser path (already installed in base image)
