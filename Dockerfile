@@ -25,4 +25,4 @@ RUN chmod -R 755 /root/.cache/ms-playwright
 
 EXPOSE 9090
 
-CMD ["java","-jar","target/hotel-scrape-1.0.jar","--server.port=9090"]
+CMD ["java","-jar","target/hotel-scrape-1.0.jar"]
